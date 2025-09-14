@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('tech_groups', function (Blueprint $table) {
             $table->id();
+            $table->string('name');            // "Backend", "Mobile", ...
+            $table->string('slug')->unique();  // backend, mobile, data-cache, cloud-devops
+            $table->unsignedSmallInteger('sort_order')->default(0);
             $table->timestamps();
         });
     }

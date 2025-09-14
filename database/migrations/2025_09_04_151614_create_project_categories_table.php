@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('project_categories', function (Blueprint $table) {
             $table->id();
+            $table->string('name');            // "Backend", "Mobile", "Web"
+            $table->string('slug')->unique();  // backend, mobile, web
+            $table->unsignedSmallInteger('sort_order')->default(0);
             $table->timestamps();
         });
     }

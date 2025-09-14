@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('social_links', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('profile_id')->constrained()->cascadeOnDelete();
+            $table->string('platform');  // github, linkedin, twitter, etc
+            $table->string('url');
+            $table->text('icon_svg')->nullable(); // kalau mau inline SVG custom
+            $table->unsignedSmallInteger('sort_order')->default(0);
             $table->timestamps();
         });
     }
