@@ -14,11 +14,11 @@ class Project extends Model
         'live_url','repo_url','is_featured','sort_order'
     ];
 
-    public function category(){ 
-        return $this->belongsTo(ProjectCategory::class);
+    public function category(){
+        return $this->belongsTo(ProjectCategory::class, "project_category_id");
     }
 
-    public function techItems(){ 
+    public function techItems(){
         return $this->belongsToMany(TechItem::class,'project_tech_item');
     }
 }

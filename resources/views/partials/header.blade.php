@@ -14,7 +14,7 @@
                 <a href="#contact" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Contact</a>
             </div>
             <div class="hidden md:block">
-                <a href="dummy-cv.pdf" download class="px-5 py-2.5 text-sm font-semibold rounded-lg bg-matrix-gray-900 text-matrix-gray-100 hover:bg-matrix-gray-100 hover:text-cyber-ink transition-all duration-300 focus-ring-modern">
+                <a href="{{ $profile->cv_url ?? 'dummy-cv.pdf' }}" download class="px-5 py-2.5 text-sm font-semibold rounded-lg bg-matrix-gray-900 text-matrix-gray-100 hover:bg-matrix-gray-100 hover:text-cyber-ink transition-all duration-300 focus-ring-modern">
                     Download CV
                 </a>
             </div>
@@ -28,7 +28,7 @@
             </div>
         </nav>
         <!-- Mobile Menu -->
-        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false" 
+        <div x-show="mobileMenuOpen" @click.away="mobileMenuOpen = false"
              x-transition:enter="transition ease-out duration-200"
              x-transition:enter-start="opacity-0 transform -translate-y-2"
              x-transition:enter-end="opacity-100 transform translate-y-0"
