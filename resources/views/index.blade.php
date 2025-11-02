@@ -81,120 +81,43 @@
             </div>
         </section>
 
-        <!-- Skills / Tech Stack Section -->
-        <section id="skills" class="py-24" x-data="{ activeTab: 'backend' }">
+{{--        <!-- Skills / Tech Stack Section -->--}}
+        <section id="skills" class="py-24"
+                 x-data="{ activeTab: '{{ $techGroups->first()->slug ?? 'backend' }}' }">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Tech Stack</h2>
                 <p class="text-lg text-matrix-gray-500 mt-2">Tools dan teknologi yang saya gunakan sehari-hari.</p>
             </div>
 
-            <!-- Tabs -->
+            {{-- Tabs (otomatis dari DB) --}}
             <div class="flex justify-center mb-8 border-b border-matrix-gray-700">
-                <button @click="activeTab = 'backend'" :class="{ 'text-plasma-cyan border-plasma-cyan': activeTab === 'backend', 'text-matrix-gray-500 border-transparent': activeTab !== 'backend' }"
+                @foreach ($techGroups as $g)
+                    <button
+                        @click="activeTab = '{{ $g->slug }}'"
+                        :class="{ 'text-plasma-cyan border-plasma-cyan': activeTab === '{{ $g->slug }}',
+                      'text-matrix-gray-500 border-transparent': activeTab !== '{{ $g->slug }}' }"
                         class="px-6 py-3 font-semibold border-b-2 transition-colors duration-300">
-                    Backend
-                </button>
-                <button @click="activeTab = 'mobile'" :class="{ 'text-plasma-cyan border-plasma-cyan': activeTab === 'mobile', 'text-matrix-gray-500 border-transparent': activeTab !== 'mobile' }"
-                        class="px-6 py-3 font-semibold border-b-2 transition-colors duration-300">
-                    Mobile
-                </button>
-                <button @click="activeTab = 'data'" :class="{ 'text-plasma-cyan border-plasma-cyan': activeTab === 'data', 'text-matrix-gray-500 border-transparent': activeTab !== 'data' }"
-                        class="px-6 py-3 font-semibold border-b-2 transition-colors duration-300">
-                    Data & Cache
-                </button>
-                <button @click="activeTab = 'cloud'" :class="{ 'text-plasma-cyan border-plasma-cyan': activeTab === 'cloud', 'text-matrix-gray-500 border-transparent': activeTab !== 'cloud' }"
-                        class="px-6 py-3 font-semibold border-b-2 transition-colors duration-300">
-                    Cloud & DevOps
-                </button>
+                        {{ $g->name }}
+                    </button>
+                @endforeach
             </div>
 
-            <!-- Skill Content -->
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 text-center">
-                <!-- Backend -->
-                <template x-if="activeTab === 'backend'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/go/go-original-wordmark.svg" class="h-12" alt="Go Icon"/>
-                        <span class="font-semibold">Go (Gin)</span>
-                    </div>
-                </template>
-                 <template x-if="activeTab === 'backend'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-plain-wordmark.svg" class="h-12" alt="Laravel Icon"/>
-                        <span class="font-semibold">PHP (Laravel)</span>
-                    </div>
-                </template>
-                <!-- Mobile -->
-                <template x-if="activeTab === 'mobile'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg" class="h-12" alt="Flutter Icon"/>
-                        <span class="font-semibold">Flutter</span>
-                    </div>
-                </template>
-                <!-- Data & Cache -->
-                <template x-if="activeTab === 'data'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg" class="h-12" alt="MySQL Icon"/>
-                        <span class="font-semibold">MySQL</span>
-                    </div>
-                </template>
-                <template x-if="activeTab === 'data'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg" class="h-12" alt="PostgreSQL Icon"/>
-                        <span class="font-semibold">PostgreSQL</span>
-                    </div>
-                </template>
-                 <template x-if="activeTab === 'data'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original-wordmark.svg" class="h-12" alt="Redis Icon"/>
-                        <span class="font-semibold">Redis</span>
-                    </div>
-                </template>
-                <template x-if="activeTab === 'data'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <p class="text-2xl font-bold">Elastic</p>
-                        <span class="font-semibold">Elasticsearch</span>
-                    </div>
-                </template>
-                 <template x-if="activeTab === 'data'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <p class="text-2xl font-bold">SingleStore</p>
-                        <span class="font-semibold">SingleStore</span>
-                    </div>
-                </template>
-                <!-- Cloud & DevOps -->
-                <template x-if="activeTab === 'cloud'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/googlecloud/googlecloud-original.svg" class="h-12" alt="GCP Icon"/>
-                        <span class="font-semibold">GCP</span>
-                    </div>
-                </template>
-                <template x-if="activeTab === 'cloud'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain-wordmark.svg" class="h-12" alt="Firebase Icon"/>
-                        <span class="font-semibold">Firebase</span>
-                    </div>
-                </template>
-                <template x-if="activeTab === 'cloud'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original-wordmark.svg" class="h-12" alt="Docker Icon"/>
-                        <span class="font-semibold">Docker</span>
-                    </div>
-                </template>
-                <template x-if="activeTab === 'cloud'">
-                     <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/kubernetes/kubernetes-plain-wordmark.svg" class="h-12" alt="Kubernetes Icon"/>
-                        <span class="font-semibold">Kubernetes</span>
-                    </div>
-                </template>
-                 <template x-if="activeTab === 'cloud'">
-                    <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
-                        <p class="text-2xl font-bold">n8n</p>
-                        <span class="font-semibold">n8n.io</span>
-                    </div>
-                </template>
-            </div>
+            @foreach ($techGroups as $g)
+                <div x-show="activeTab === '{{ $g->slug }}'"
+                     class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 text-center">
+                    @foreach ($g->items as $item)
+                        <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
+                            @if($item->icon_url)
+                                <img src="{{ $item->icon_url }}" class="h-12" alt="{{ $item->name }}">
+                            @else
+                                <p class="text-2xl font-bold">{{ $item->name }}</p>
+                            @endif
+                            <span class="font-semibold">{{ $item->name }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
 
-              <!-- Marquee -->
                 <div x-data x-intersect.once.margin.-100px="$el.classList.add('visible')" class="reveal mt-16 w-full overflow-hidden relative">
                     <div class="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-slate-base/30 to-transparent z-10"></div>
                     <div class="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-base/30 to-transparent z-10"></div>

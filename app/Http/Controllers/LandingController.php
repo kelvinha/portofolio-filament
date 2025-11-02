@@ -29,18 +29,14 @@ class LandingController extends Controller
             ];
         })->values();
 
-        $testimonialsData = $testimonials->map(function ($t) {
-            return [
-                'id'     => $t->id,
-                'name'   => $t->name,
-                'role'   => $t->role,
-                'avatar' => $t->avatar_url,
-                'quote'  => $t->quote,
-            ];
-        })->values();
+        $testimonials = Testimonial::orderBy('sort_order')->get();
+        $testimonialsData = $testimonials->map(fn($t)=>[
+            'id'=>$t->id, 'name'=>$t->name, 'role'=>$t->role,
+            'avatar'=>$t->avatar_url, 'quote'=>$t->quote,
+        ])->values();
 
         return view('index', compact(
-            'profile','techGroups','categories','projects','testimonials',
+            'profile','techGroups','categories',
             'projectsData','testimonialsData'
         ));
     }
