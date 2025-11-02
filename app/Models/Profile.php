@@ -10,7 +10,7 @@ class Profile extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'full_name','headline','bio','avatar_url','location',
+        'full_name','headline','bio','about_me','avatar_url','location',
         'years_experience','projects_shipped','industries_count','cv_url'
     ];
 

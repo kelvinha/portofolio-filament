@@ -31,9 +31,13 @@ class ProfileResource extends Resource
                     ->default(null),
                 Forms\Components\Textarea::make('bio')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('avatar_url')
-                    ->maxLength(255)
-                    ->default(null),
+                Forms\Components\Textarea::make('about_me')
+                    ->columnSpanFull(),
+                Forms\Components\FileUpload::make('avatar_url')
+                    ->image()
+                    ->disk('public')
+                    ->directory('profiles/avatars')
+                    ->visibility('public'),
                 Forms\Components\TextInput::make('location')
                     ->maxLength(255)
                     ->default(null),
@@ -49,9 +53,12 @@ class ProfileResource extends Resource
                     ->required()
                     ->numeric()
                     ->default(0),
-                Forms\Components\TextInput::make('cv_url')
-                    ->maxLength(255)
-                    ->default(null),
+                Forms\Components\FileUpload::make('cv_url')
+                    ->acceptedFileTypes(['application/pdf'])
+                    ->disk('public')
+                    ->directory('profiles/cvs')
+                    ->visibility('public')
+                    ->maxSize(10240), // 10MB
             ]);
     }
 
