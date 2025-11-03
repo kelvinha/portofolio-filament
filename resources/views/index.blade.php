@@ -37,7 +37,7 @@
                 </div>
                 <div class = "hidden md:flex justify-center items-center animate-fade-in">
                 <div class = "relative">
-                <img src="/vin.jpg" alt="Avatar Kelvin Hartanto" class="rounded-full border-4 border-matrix-gray-700 shadow-2xl shadow-plasma-cyan/20">
+                <img src="{{ Storage::url($profile->avatar_url) }}" alt="Avatar {{ $profile->full_name ?? 'Your Name' }}" class="rounded-full border-4 border-matrix-gray-700 shadow-2xl shadow-plasma-cyan/20">
                         <div class="absolute -top-4 -right-4 p-3 bg-matrix-gray-900 rounded-full shadow-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-hyper-magenta" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
                         </div>
@@ -58,10 +58,7 @@
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
                 <div class="lg:col-span-3 text-lg text-matrix-gray-300 leading-8 space-y-4">
                     <p>
-                        Sebagai seorang engineer, saya terobsesi dengan performa, keandalan, dan efisiensi. Saya menikmati proses merancang arsitektur sistem backend yang mampu menangani beban tinggi, serta mengotomatisasi proses-proses repetitif untuk meningkatkan produktivitas.
-                    </p>
-                    <p>
-                        Di sisi mobile, saya antusias dengan Flutter karena kemampuannya membangun aplikasi cross-platform yang indah dan cepat. Saya percaya bahwa kombinasi backend yang kuat dan frontend yang responsif adalah kunci untuk menciptakan produk digital yang luar biasa.
+                        {{ $profile->about_me ?? 'Tuliskan sesuatu tentang diri Anda disini...' }}
                     </p>
                 </div>
                 <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
@@ -70,7 +67,7 @@
                         <p class="text-matrix-gray-300 mt-2">Years of Experience</p>
                     </div>
                      <div class="card-glassy p-6 text-center transform hover:scale-105 transition-transform duration-300">
-                        <div class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-plasma-cyan to-hyper-magenta">{{ $profile->project_shipped ?? 0 }}+</div>
+                        <div class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-plasma-cyan to-hyper-magenta">{{ $profile->projects_shipped ?? 0 }}+</div>
                         <p class="text-matrix-gray-300 mt-2">Projects Shipped</p>
                     </div>
                      <div class="card-glassy p-6 text-center transform hover:scale-105 transition-transform duration-300">

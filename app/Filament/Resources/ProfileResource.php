@@ -37,7 +37,13 @@ class ProfileResource extends Resource
                     ->image()
                     ->disk('public')
                     ->directory('profiles/avatars')
-                    ->visibility('public'),
+                    ->visibility('public')
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        '1:1',
+                        '4:3',
+                        '16:9',
+                    ]),
                 Forms\Components\TextInput::make('location')
                     ->maxLength(255)
                     ->default(null),
@@ -58,7 +64,9 @@ class ProfileResource extends Resource
                     ->disk('public')
                     ->directory('profiles/cvs')
                     ->visibility('public')
-                    ->maxSize(10240), // 10MB
+                    ->maxSize(10240) // 10MB
+                    ->enableDownload()
+                    ->enableOpen(),
             ]);
     }
 
@@ -70,7 +78,7 @@ class ProfileResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('headline')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('avatar_url')
+                Tables\Columns\ImageColumn::make('avatar_url')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('location')
                     ->searchable(),
