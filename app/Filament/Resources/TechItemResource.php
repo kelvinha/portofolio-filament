@@ -54,7 +54,7 @@ class TechItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('techGroup.name')
+                Tables\Columns\TextColumn::make('group.name')
                     ->label('Tech Group')
                     ->sortable()
                     ->searchable(),
@@ -63,7 +63,14 @@ class TechItemResource extends Resource
                 Tables\Columns\ImageColumn::make('icon_url')
                     ->label('Icon')
                     ->width(60)
-                    ->height(60),
+                    ->height(60)
+                    ->getStateUsing(function ($record) {
+                        // If it's a URL, use it directly, otherwise assume it's a storage path
+                        if (filter_var($record->icon_url, FILTER_VALIDATE_URL)) {
+                            return $record->icon_url;
+                        }
+                        return $record->icon_url ? \Illuminate\Support\Facades\Storage::disk('public')->url($record->icon_url) : null;
+                    }),
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label('Featured')
                     ->boolean(),
