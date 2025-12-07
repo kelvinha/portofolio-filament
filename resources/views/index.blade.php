@@ -11,7 +11,7 @@
     <!-- Header / Navbar -->
     @include('partials.header')
 
-    <main class="container mx-auto px-6">
+    <main class="container mx-auto px-4 sm:px-6">
 
         <!-- Hero Section -->
         <section id="home" class="min-h-screen flex items-center tech-pattern">
@@ -26,7 +26,7 @@
                     <p class="max-w-xl mx-auto md:mx-0 text-lg md:text-xl text-matrix-gray-300 leading-8">
                         {{ $profile->bio ?? 'Short bio...' }}
                     </p>
-                    <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-4 pt-4">
+                    <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-3 sm:gap-4 pt-4">
                         <a href="mailto:kelvinhartanto18@gmail.com" class="px-8 py-3.5 font-bold text-cyber-ink bg-glitch-green rounded-lg shadow-lg shadow-glitch-green/20 hover:scale-[1.02] hover:shadow-glitch-green/40 transition-all duration-200 focus-ring-modern">
                             Hire Me
                         </a>
@@ -35,6 +35,28 @@
                         </a>
                     </div>
                 </div>
+                <!-- Mobile Avatar -->
+                <div class="md:hidden flex justify-center items-center mb-8 animate-fade-in">
+                    <div class="relative">
+                        <div class="relative">
+                            <div class="absolute inset-0 bg-matrix-gray-800 rounded-full animate-pulse"></div>
+                            <img src="{{ Storage::url($profile->avatar_url) }}"
+                                 alt="Avatar {{ $profile->full_name ?? 'Your Name' }}"
+                                 class="w-32 h-32 rounded-full border-4 border-matrix-gray-700 shadow-2xl shadow-plasma-cyan/20 transition-opacity duration-300 object-cover"
+                                 loading="lazy"
+                                 onload="this.style.opacity='1'"
+                                 style="opacity: 0">
+                        </div>
+                        <div class="absolute -top-3 -right-3 p-2 bg-matrix-gray-900 rounded-full shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-hyper-magenta" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                        </div>
+                        <div class="absolute -bottom-3 -left-3 p-2 bg-matrix-gray-900 rounded-full shadow-lg">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-glitch-green" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M12 6V3m0 18v-3" /></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Desktop Avatar -->
                 <div class = "hidden md:flex justify-center items-center animate-fade-in">
                 <div class = "relative">
                 <div class="relative">
@@ -58,18 +80,18 @@
         </section>
 
         <!-- About Section -->
-        <section id="about" class="py-24">
-            <div class="text-center mb-16">
+        <section id="about" class="py-16 md:py-24">
+            <div class="text-center mb-12 md:mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">About Me</h2>
                 <p class="text-lg text-matrix-gray-500 mt-2">A bit about my journey in the world of technology.</p>
             </div>
-            <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
-                <div class="lg:col-span-3 text-lg text-matrix-gray-300 leading-8 space-y-4">
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
+                <div class="lg:col-span-3 text-base md:text-lg text-matrix-gray-300 leading-7 md:leading-8 space-y-4">
                     <p>
                         {{ $profile->about_me ?? 'Write something about yourself here...' }}
                     </p>
                 </div>
-                <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
+                <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 md:gap-6">
                     <div class="card-glassy p-6 text-center transform hover:scale-105 transition-transform duration-300">
                         <div class="text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-plasma-cyan to-hyper-magenta">{{ $profile->years_experience ?? 0 }}+</div>
                         <p class="text-matrix-gray-300 mt-2">Years of Experience</p>
@@ -87,8 +109,8 @@
         </section>
 
          <!-- Work Experience Section -->
-         <section id="experience" class="py-24">
-            <div class="text-center mb-16">
+         <section id="experience" class="py-16 md:py-24">
+            <div class="text-center mb-12 md:mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Work Experience</h2>
                 <p class="text-lg text-matrix-gray-500 mt-2">My professional journey and career milestones.</p>
             </div>
@@ -96,12 +118,48 @@
             <div class="max-w-4xl mx-auto">
                 @if(isset($workExperiencesData) && $workExperiencesData->count() > 0)
                     <div class="relative">
-                        <!-- Timeline line -->
-                        <div class="absolute left-1/2 transform -translate-x-0.5 w-0.5 h-full bg-gradient-to-b from-plasma-cyan to-hyper-magenta"></div>
+                        <!-- Timeline line - hidden on mobile, visible on desktop -->
+                        <div class="hidden md:block absolute left-1/2 transform -translate-x-0.5 w-0.5 h-full bg-gradient-to-b from-plasma-cyan to-hyper-magenta"></div>
 
-                        <div class="space-y-12">
+                        <div class="space-y-8 md:space-y-12">
                             @foreach($workExperiencesData as $index => $experience)
-                                <div class="relative flex items-center {{ $index % 2 === 0 ? 'justify-start' : 'justify-end' }} {{ $index % 2 === 0 ? 'pr-1/2' : 'pl-1/2' }}">
+                                <!-- Mobile layout: single column -->
+                                <div class="md:hidden">
+                                    <div class="card-glassy p-6 hover:scale-105 transition-transform duration-300">
+                                        <div class="flex items-start space-x-4">
+                                            @if($experience['company_logo'])
+                                                <div class="flex-shrink-0">
+                                                    <img src="{{ Storage::url($experience['company_logo']) }}"
+                                                         alt="{{ $experience['company_name'] }} Logo"
+                                                         class="w-12 h-12 rounded-lg object-cover bg-matrix-gray-800"
+                                                         loading="lazy">
+                                                </div>
+                                            @endif
+                                            <div class="flex-1">
+                                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 gap-2">
+                                                    <h3 class="text-xl font-bold text-matrix-gray-100">{{ $experience['company_name'] }}</h3>
+                                                    <span class="text-sm font-semibold text-plasma-cyan bg-plasma-cyan/10 px-2 py-1 rounded-full self-start sm:self-auto">
+                                                        {{ $experience['work_start_year'] }}
+                                                        @if($experience['work_end_year'])
+                                                            - {{ $experience['work_end_year'] }}
+                                                        @else
+                                                            - Present
+                                                        @endif
+                                                    </span>
+                                                </div>
+                                                @if($experience['roles'])
+                                                    <p class="text-sm font-semibold text-hyper-magenta mb-2">{{ $experience['roles'] }}</p>
+                                                @endif
+                                                @if($experience['description'])
+                                                    <p class="text-matrix-gray-300 text-sm leading-relaxed">{{ $experience['description'] }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Desktop layout: alternating timeline -->
+                                <div class="hidden md:flex items-center {{ $index % 2 === 0 ? 'justify-start' : 'justify-end' }} {{ $index % 2 === 0 ? 'pr-1/2' : 'pl-1/2' }}">
                                     <!-- Timeline dot -->
                                     <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-plasma-cyan rounded-full border-4 border-cyber-ink z-10"></div>
 
@@ -157,29 +215,31 @@
         </section>
 
 {{--        <!-- Skills / Tech Stack Section -->--}}
-        <section id="skills" class="py-24"
+        <section id="skills" class="py-16 md:py-24"
                  x-data="{ activeTab: '{{ $techGroups->first()->slug ?? 'backend' }}' }">
-            <div class="text-center mb-16">
+            <div class="text-center mb-12 md:mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Tech Stack</h2>
                 <p class="text-lg text-matrix-gray-500 mt-2">Tools and technologies I use on a daily basis.</p>
             </div>
 
             {{-- Tabs (otomatis dari DB) --}}
-            <div class="flex justify-center mb-8 border-b border-matrix-gray-700">
-                @foreach ($techGroups as $g)
-                    <button
-                        @click="activeTab = '{{ $g->slug }}'"
-                        :class="{ 'text-plasma-cyan border-plasma-cyan': activeTab === '{{ $g->slug }}',
-                      'text-matrix-gray-500 border-transparent': activeTab !== '{{ $g->slug }}' }"
-                        class="px-6 py-3 font-semibold border-b-2 transition-colors duration-300">
-                        {{ $g->name }}
-                    </button>
-                @endforeach
+            <div class="flex justify-center mb-8 border-b border-matrix-gray-700 overflow-x-auto scrollbar-hide">
+                <div class="flex min-w-full md:min-w-0">
+                    @foreach ($techGroups as $g)
+                        <button
+                            @click="activeTab = '{{ $g->slug }}'"
+                            :class="{ 'text-plasma-cyan border-plasma-cyan': activeTab === '{{ $g->slug }}',
+                          'text-matrix-gray-500 border-transparent': activeTab !== '{{ $g->slug }}' }"
+                            class="px-4 md:px-6 py-3 font-semibold border-b-2 transition-colors duration-300 whitespace-nowrap flex-shrink-0">
+                            {{ $g->name }}
+                        </button>
+                    @endforeach
+                </div>
             </div>
 
             @foreach ($techGroups as $g)
                 <div x-show="activeTab === '{{ $g->slug }}'"
-                     class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 text-center">
+                     class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6 text-center">
                     @foreach ($g->items as $item)
                         <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
                             @if($item->icon_url)
@@ -224,14 +284,14 @@
         </section>
 
         <!-- Featured Projects Section -->
-        <section id="projects" class="py-24" x-data="projectsData()">
-            <div class="text-center mb-16">
+        <section id="projects" class="py-16 md:py-24" x-data="projectsData()">
+            <div class="text-center mb-12 md:mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Featured Projects</h2>
                 <p class="text-lg text-matrix-gray-500 mt-2">Some projects I've worked on.</p>
             </div>
 
             <!-- Filter Buttons -->
-            <div class="flex justify-center flex-wrap gap-3 mb-12">
+            <div class="flex justify-center flex-wrap gap-2 sm:gap-3 mb-8 md:mb-12">
                 <button @click="filter = 'all'" :class="{ 'bg-plasma-cyan text-cyber-ink': filter === 'all', 'bg-matrix-gray-900 text-matrix-gray-300': filter !== 'all' }"
                         class="px-5 py-2 text-sm font-semibold rounded-full transition-colors duration-300">
                     All
@@ -251,7 +311,7 @@
             </div>
 
             <!-- Projects Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                 <template x-for="project in filteredProjects()" :key="project.id">
                     <div @click="activeProject = project; projectModalOpen = true"
                          class="card-glassy p-6 group cursor-pointer overflow-hidden transform hover:scale-[1.02] transition-transform duration-300">
@@ -312,8 +372,8 @@
         </section> -->
 
         <!-- Social Links Section -->
-        <section id="contact" class="py-24">
-            <div class="text-center mb-16">
+        <section id="contact" class="py-16 md:py-24">
+            <div class="text-center mb-12 md:mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Connect With Me</h2>
                 <p class="text-lg text-matrix-gray-500 mt-2">Find me on various digital platforms</p>
             </div>
