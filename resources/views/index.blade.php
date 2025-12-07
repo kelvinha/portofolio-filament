@@ -36,7 +36,7 @@
                     </div>
                 </div>
                 <!-- Mobile Avatar -->
-                <div class="md:hidden flex justify-center items-center mb-8 animate-fade-in">
+                <div class="hidden flex justify-center items-center mb-8 animate-fade-in">
                     <div class="relative">
                         <div class="relative">
                             <div class="absolute inset-0 bg-matrix-gray-800 rounded-full animate-pulse"></div>
