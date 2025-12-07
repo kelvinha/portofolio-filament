@@ -27,7 +27,7 @@
                         {{ $profile->bio ?? 'Short bio...' }}
                     </p>
                     <div class="flex flex-col sm:flex-row justify-center md:justify-start gap-4 pt-4">
-                        <a href="#contact" class="px-8 py-3.5 font-bold text-cyber-ink bg-glitch-green rounded-lg shadow-lg shadow-glitch-green/20 hover:scale-[1.02] hover:shadow-glitch-green/40 transition-all duration-200 focus-ring-modern">
+                        <a href="mailto:kelvinhartanto18@gmail.com" class="px-8 py-3.5 font-bold text-cyber-ink bg-glitch-green rounded-lg shadow-lg shadow-glitch-green/20 hover:scale-[1.02] hover:shadow-glitch-green/40 transition-all duration-200 focus-ring-modern">
                             Hire Me
                         </a>
                         <a href="#projects" class="px-8 py-3.5 font-bold text-matrix-gray-100 bg-transparent border-2 border-matrix-gray-500 rounded-lg hover:bg-matrix-gray-700 hover:border-matrix-gray-300 hover:scale-[1.02] transition-all duration-200 focus-ring-modern">
@@ -37,7 +37,15 @@
                 </div>
                 <div class = "hidden md:flex justify-center items-center animate-fade-in">
                 <div class = "relative">
-                <img src="{{ Storage::url($profile->avatar_url) }}" alt="Avatar {{ $profile->full_name ?? 'Your Name' }}" class="rounded-full border-4 border-matrix-gray-700 shadow-2xl shadow-plasma-cyan/20">
+                <div class="relative">
+                    <div class="absolute inset-0 bg-matrix-gray-800 rounded-full animate-pulse"></div>
+                    <img src="{{ Storage::url($profile->avatar_url) }}"
+                         alt="Avatar {{ $profile->full_name ?? 'Your Name' }}"
+                         class="rounded-full border-4 border-matrix-gray-700 shadow-2xl shadow-plasma-cyan/20 transition-opacity duration-300"
+                         loading="lazy"
+                         onload="this.style.opacity='1'"
+                         style="opacity: 0">
+                </div>
                         <div class="absolute -top-4 -right-4 p-3 bg-matrix-gray-900 rounded-full shadow-lg">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-hyper-magenta" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
                         </div>
@@ -53,12 +61,12 @@
         <section id="about" class="py-24">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">About Me</h2>
-                <p class="text-lg text-matrix-gray-500 mt-2">Sedikit tentang perjalanan saya di dunia teknologi.</p>
+                <p class="text-lg text-matrix-gray-500 mt-2">A bit about my journey in the world of technology.</p>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-12 items-center">
                 <div class="lg:col-span-3 text-lg text-matrix-gray-300 leading-8 space-y-4">
                     <p>
-                        {{ $profile->about_me ?? 'Tuliskan sesuatu tentang diri Anda disini...' }}
+                        {{ $profile->about_me ?? 'Write something about yourself here...' }}
                     </p>
                 </div>
                 <div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6">
@@ -78,12 +86,82 @@
             </div>
         </section>
 
+         <!-- Work Experience Section -->
+         <section id="experience" class="py-24">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Work Experience</h2>
+                <p class="text-lg text-matrix-gray-500 mt-2">My professional journey and career milestones.</p>
+            </div>
+
+            <div class="max-w-4xl mx-auto">
+                @if(isset($workExperiencesData) && $workExperiencesData->count() > 0)
+                    <div class="relative">
+                        <!-- Timeline line -->
+                        <div class="absolute left-1/2 transform -translate-x-0.5 w-0.5 h-full bg-gradient-to-b from-plasma-cyan to-hyper-magenta"></div>
+
+                        <div class="space-y-12">
+                            @foreach($workExperiencesData as $index => $experience)
+                                <div class="relative flex items-center {{ $index % 2 === 0 ? 'justify-start' : 'justify-end' }} {{ $index % 2 === 0 ? 'pr-1/2' : 'pl-1/2' }}">
+                                    <!-- Timeline dot -->
+                                    <div class="absolute left-1/2 transform -translate-x-1/2 w-4 h-4 bg-plasma-cyan rounded-full border-4 border-cyber-ink z-10"></div>
+
+                                    <!-- Content card -->
+                                    <div class="card-glassy p-6 max-w-md w-full {{ $index % 2 === 0 ? 'mr-8' : 'ml-8' }} hover:scale-105 transition-transform duration-300">
+                                        <div class="flex items-start space-x-4">
+                                            @if($experience['company_logo'])
+                                                <div class="flex-shrink-0">
+                                                    <img src="{{ Storage::url($experience['company_logo']) }}"
+                                                         alt="{{ $experience['company_name'] }} Logo"
+                                                         class="w-12 h-12 rounded-lg object-cover bg-matrix-gray-800"
+                                                         loading="lazy">
+                                                </div>
+                                            @endif
+                                            <div class="flex-1">
+                                                <div class="flex items-center justify-between mb-2">
+                                                    <h3 class="text-xl font-bold text-matrix-gray-100">{{ $experience['company_name'] }}</h3>
+                                                    <span class="text-sm font-semibold text-plasma-cyan bg-plasma-cyan/10 px-2 py-1 rounded-full">
+                                                        {{ $experience['work_start_year'] }}
+                                                        @if($experience['work_end_year'])
+                                                            - {{ $experience['work_end_year'] }}
+                                                        @else
+                                                            - Present
+                                                        @endif
+                                                    </span>
+                                                </div>
+                                                @if($experience['roles'])
+                                                    <p class="text-sm font-semibold text-hyper-magenta mb-2">{{ $experience['roles'] }}</p>
+                                                @endif
+                                                @if($experience['description'])
+                                                    <p class="text-matrix-gray-300 text-sm leading-relaxed">{{ $experience['description'] }}</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                @else
+                    <!-- Empty state -->
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 bg-matrix-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-matrix-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-matrix-gray-300 mb-2">Work Experience Coming Soon</h3>
+                        <p class="text-matrix-gray-500">Professional experience will be added through the admin panel.</p>
+                    </div>
+                @endif
+            </div>
+        </section>
+
 {{--        <!-- Skills / Tech Stack Section -->--}}
         <section id="skills" class="py-24"
                  x-data="{ activeTab: '{{ $techGroups->first()->slug ?? 'backend' }}' }">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Tech Stack</h2>
-                <p class="text-lg text-matrix-gray-500 mt-2">Tools dan teknologi yang saya gunakan sehari-hari.</p>
+                <p class="text-lg text-matrix-gray-500 mt-2">Tools and technologies I use on a daily basis.</p>
             </div>
 
             {{-- Tabs (otomatis dari DB) --}}
@@ -105,7 +183,12 @@
                     @foreach ($g->items as $item)
                         <div class="card-glassy p-6 flex flex-col items-center justify-center space-y-3 transform hover:-translate-y-2 transition-transform duration-300">
                             @if($item->icon_url)
-                                <img src="{{ $item->icon_url }}" class="h-12" alt="{{ $item->name }}">
+                                <img src="{{ $item->icon_url }}"
+                                     class="h-12 transition-opacity duration-300"
+                                     alt="{{ $item->name }}"
+                                     loading="lazy"
+                                     onload="this.style.opacity='1'"
+                                     style="opacity: 0">
                             @else
                                 <p class="text-2xl font-bold">{{ $item->name }}</p>
                             @endif
@@ -144,7 +227,7 @@
         <section id="projects" class="py-24" x-data="projectsData()">
             <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Featured Projects</h2>
-                <p class="text-lg text-matrix-gray-500 mt-2">Beberapa proyek yang pernah saya kerjakan.</p>
+                <p class="text-lg text-matrix-gray-500 mt-2">Some projects I've worked on.</p>
             </div>
 
             <!-- Filter Buttons -->
@@ -176,7 +259,10 @@
                             <img :src="project.image" :alt="project.title" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                             <div class="absolute inset-0 bg-black/20"></div>
                         </div>
-                        <h3 class="text-xl font-bold text-matrix-gray-100" x-text="project.title"></h3>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="text-xl font-bold text-matrix-gray-100" x-text="project.title"></h3>
+                            <span class="text-sm font-semibold text-plasma-cyan bg-plasma-cyan/10 px-2 py-1 rounded-full" x-text="project.year"></span>
+                        </div>
                         <p class="text-sm text-matrix-gray-500 mb-4" x-text="project.role"></p>
                         <div class="flex flex-wrap gap-2">
                             <template x-for="tech in project.tech" :key="tech">
@@ -189,10 +275,10 @@
         </section>
 
         <!-- Testimonials Section -->
-        <section id="testimonials" class="py-24" x-data="testimonialsCarousel()">
+        <!-- <section id="testimonials" class="py-24" x-data="testimonialsCarousel()">
              <div class="text-center mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Testimonials</h2>
-                <p class="text-lg text-matrix-gray-500 mt-2">Apa kata mereka tentang kerja sama dengan saya.</p>
+                <p class="text-lg text-matrix-gray-500 mt-2">What they say about working with me.</p>
             </div>
             <div class="relative w-full max-w-3xl mx-auto overflow-hidden" @mouseenter="stop" @mouseleave="start">
                 <div class="flex transition-transform duration-500 ease-in-out" :style="{ transform: `translateX(-${currentIndex * 100}%)` }">
@@ -201,7 +287,12 @@
                             <div class="card-glassy p-8 md:p-12 text-center">
                                 <p class="text-lg md:text-xl italic text-matrix-gray-300 leading-relaxed">" <span x-text="testimonial.quote"></span> "</p>
                                 <div class="mt-8 flex items-center justify-center">
-                                    <img :src="testimonial.avatar" :alt="testimonial.name" class="w-14 h-14 rounded-full border-2 border-hyper-magenta">
+                                    <img :src="testimonial.avatar"
+                                         :alt="testimonial.name"
+                                         class="w-14 h-14 rounded-full border-2 border-hyper-magenta transition-opacity duration-300"
+                                         loading="lazy"
+                                         onload="this.style.opacity='1'"
+                                         style="opacity: 0">
                                     <div class="ml-4 text-left">
                                         <p class="font-bold text-matrix-gray-100" x-text="testimonial.name"></p>
                                         <p class="text-sm text-matrix-gray-500" x-text="testimonial.role"></p>
@@ -211,7 +302,6 @@
                         </div>
                     </template>
                 </div>
-                <!-- Carousel Controls -->
                 <button @click="prev()" class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 p-2 bg-matrix-gray-900/50 rounded-full hover:bg-matrix-gray-700 transition-colors focus-ring-modern">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
                 </button>
@@ -219,43 +309,67 @@
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                 </button>
             </div>
-        </section>
+        </section> -->
 
-        <!-- Contact Section -->
-        <section id    = "contact" class = "py-24">
-        <div     class = "text-center mb-16">
-        <h2      class = "text-3xl md:text-4xl font-bold tracking-tight">Get In Touch</h2>
-        <p       class = "text-lg text-matrix-gray-500 mt-2">Mari berdiskusi tentang proyek Anda selanjutnya.</p>
+        <!-- Social Links Section -->
+        <section id="contact" class="py-24">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold tracking-tight">Connect With Me</h2>
+                <p class="text-lg text-matrix-gray-500 mt-2">Find me on various digital platforms</p>
             </div>
-            <div class="max-w-2xl mx-auto card-glassy p-8 md:p-12">
-                <form action="mailto:your.email@example.com" method="get" enctype="text/plain">
-                    <div class="grid grid-cols-1 gap-6">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-matrix-gray-300">Name</label>
-                            <input type="text" name="subject" id="name" required class="mt-1 block w-full bg-matrix-gray-900 border border-matrix-gray-700 rounded-lg shadow-sm py-3 px-4 text-matrix-gray-100 focus:border-plasma-cyan focus:ring focus:ring-plasma-cyan focus:ring-opacity-50">
-                        </div>
-                        <div>
-                            <label for="email" class="block text-sm font-medium text-matrix-gray-300">Email</label>
-                            <input type="email" name="cc" id="email" required class="mt-1 block w-full bg-matrix-gray-900 border border-matrix-gray-700 rounded-lg shadow-sm py-3 px-4 text-matrix-gray-100 focus:border-plasma-cyan focus:ring focus:ring-plasma-cyan focus:ring-opacity-50">
-                        </div>
-                        <div>
-                            <label for="message" class="block text-sm font-medium text-matrix-gray-300">Message</label>
-                            <textarea id="message" name="body" rows="4" required class="mt-1 block w-full bg-matrix-gray-900 border border-matrix-gray-700 rounded-lg shadow-sm py-3 px-4 text-matrix-gray-100 focus:border-plasma-cyan focus:ring focus:ring-plasma-cyan focus:ring-opacity-50"></textarea>
-                        </div>
-                        <div>
-                            <button type="submit" class="w-full px-8 py-3.5 font-bold text-cyber-ink bg-glitch-green rounded-lg shadow-lg shadow-glitch-green/20 hover:scale-[1.02] hover:shadow-glitch-green/40 transition-all duration-200 focus-ring-modern">
-                                Send Message
-                            </button>
-                        </div>
+
+            <div class="max-w-4xl mx-auto">
+                @if($profile && $profile->socialLinks->count() > 0)
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6">
+                        @foreach($profile->socialLinks as $socialLink)
+                            <a href="{{ $socialLink->url }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="group card-glassy p-6 hover:scale-105 transition-all duration-300 hover:shadow-lg hover:shadow-plasma-cyan/20"
+                               title="Visit {{ $socialLink->platform }}">
+                                <div class="flex flex-col items-center text-center space-y-4">
+                                    <div class="p-4 bg-matrix-gray-900 rounded-full group-hover:bg-matrix-gray-800 transition-colors duration-300">
+                                        <div class="w-8 h-8 text-matrix-gray-400 group-hover:text-plasma-cyan transition-colors duration-300">
+                                            {!! $socialLink->icon_svg !!}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-matrix-gray-200 group-hover:text-white transition-colors duration-300">
+                                            {{ $socialLink->platform }}
+                                        </h3>
+                                        <p class="text-sm text-matrix-gray-500 group-hover:text-matrix-gray-400 transition-colors duration-300">
+                                            Follow me here
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        @endforeach
                     </div>
-                </form>
-                <div class="text-center mt-8">
-                    <p class="text-matrix-gray-500">Saya biasanya merespon dalam 1-2 hari kerja.</p>
-                    <p class="text-matrix-gray-500">Location: {{ $profile->location ?? 'Jakarta, Indonesia' }}</p>
-                    <div class="flex justify-center space-x-6 mt-6">
-                        <a href="#" class="text-matrix-gray-500 hover:text-plasma-cyan transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12.013c0 4.418 2.865 8.166 6.839 9.49.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.398.1 2.651.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12.013C22 6.477 17.523 2 12 2z" clip-rule="evenodd" /></svg></a>
-                        <a href="#" class="text-matrix-gray-500 hover:text-plasma-cyan transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.71v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg></a>
-                        <a href="#" class="text-matrix-gray-500 hover:text-plasma-cyan transition-colors"><svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M16.338 16.338H13.67V12.16c0-.995-.017-2.277-1.387-2.277-1.39 0-1.601 1.086-1.601 2.206v4.248H8.014v-8.59h2.559v1.174h.037c.356-.675 1.227-1.387 2.526-1.387 2.703 0 3.203 1.778 3.203 4.092v4.711zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.337 8.905H4v-8.59h2.674v8.59zM17.638 2H6.362A4.362 4.362 0 002 6.362v11.276A4.362 4.362 0 006.362 22h11.276A4.362 4.362 0 0022 17.638V6.362A4.362 4.362 0 0017.638 2z" clip-rule="evenodd" /></svg></a>
+                @else
+                    <!-- Fallback social links jika belum ada data di CMS -->
+                    <div class="text-center py-12">
+                        <div class="w-16 h-16 bg-matrix-gray-800 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-matrix-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold text-matrix-gray-300 mb-2">Social Links Coming Soon</h3>
+                        <p class="text-matrix-gray-500">Social media links akan segera ditambahkan melalui admin panel.</p>
+                    </div>
+                @endif
+
+                <!-- Contact Info -->
+                <div class="text-center mt-16">
+                    <div class="card-glassy p-8 max-w-md mx-auto">
+                        <h3 class="text-xl font-semibold text-matrix-gray-200 mb-4">Get In Touch</h3>
+                        <p class="text-matrix-gray-500 mb-6">Interested in working together? Let's discuss your project!</p>
+                        <a href="mailto:kelvinhartanto18@gmail.com"
+                           class="inline-flex items-center px-6 py-3 font-bold text-cyber-ink bg-glitch-green rounded-lg shadow-lg shadow-glitch-green/20 hover:scale-[1.02] hover:shadow-glitch-green/40 transition-all duration-200 focus-ring-modern">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            Send Email
+                        </a>
                     </div>
                 </div>
             </div>
@@ -278,7 +392,10 @@
     <button      @click                 = "projectModalOpen = false" class = "absolute top-4 right-4 text-matrix-gray-500 hover:text-white transition-colors">
     <svg         class                  = "w-6 h-6" fill                   = "none" stroke = "currentColor" viewBox = "0 0 24 24"><path stroke-linecap = "round" stroke-linejoin = "round" stroke-width = "2" d = "M6 18L18 6M6 6l12 12"></path></svg>
             </button>
-            <h3 class="text-3xl font-bold mb-2" x-text="activeProject.title"></h3>
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-3xl font-bold" x-text="activeProject.title"></h3>
+                <span class="text-lg font-semibold text-plasma-cyan bg-plasma-cyan/10 px-3 py-1 rounded-full" x-text="activeProject.year"></span>
+            </div>
             <p class="text-md text-matrix-gray-500 mb-6" x-text="activeProject.role"></p>
             <img :src="activeProject.image" :alt="activeProject.title" class="w-full aspect-video object-cover rounded-lg mb-6">
             <div class="text-matrix-gray-300 space-y-4 leading-7" x-html="activeProject.description"></div>

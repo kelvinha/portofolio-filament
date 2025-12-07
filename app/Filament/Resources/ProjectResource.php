@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProjectResource\Pages;
 use App\Filament\Resources\ProjectResource\RelationManagers;
 use App\Models\Project;
+use App\Models\ProjectCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,37 +18,68 @@ class ProjectResource extends Resource
 {
     protected static ?string $model = Project::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-code-bracket';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('project_category_id')
+                Forms\Components\Select::make('project_category_id')
+                    ->label('Project Category')
+                    ->options(ProjectCategory::pluck('name', 'id'))
                     ->required()
-                    ->numeric(),
+                    ->searchable()
+                    ->placeholder('Pilih kategori project'),
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('role')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\FileUpload::make('hero_image_url')
-                    ->image(),
-                Forms\Components\Textarea::make('description_html')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('live_url')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\TextInput::make('repo_url')
-                    ->maxLength(255)
-                    ->default(null),
-                Forms\Components\Toggle::make('is_featured')
-                    ->required(),
-                Forms\Components\TextInput::make('sort_order')
-                    ->required()
+                Forms\Components\TextInput::make('year')
+                    ->label('Project Year')
                     ->numeric()
-                    ->default(0),
+                    ->minValue(2000)
+                    ->maxValue(date('Y') + 5)
+                    ->default(date('Y'))
+                    ->required()
+                    ->placeholder('e.g. 2024'),
+                Forms\Components\TextInput::make('role')
+                    ->label('Your Role')
+                    ->maxLength(255)
+                    ->default(null)
+                    ->placeholder('e.g. Full Stack Developer, Frontend Developer'),
+                Forms\Components\FileUpload::make('hero_image_url')
+                    ->label('Hero Image')
+                    ->image()
+                    ->imageEditor()
+                    ->imageEditorAspectRatios([
+                        '16:9',
+                        '4:3',
+                        '1:1',
+                    ])
+                    ->directory('projects/hero-images')
+                    ->visibility('public')
+                    ->maxSize(5120) // 5MB
+                    ->helperText('Upload gambar hero project (max 5MB)'),
+                Forms\Components\Textarea::make('description_html')
+                    ->label('Description')
+                    ->columnSpanFull()
+                    ->rows(6)
+                    ->placeholder('Deskripsikan project ini secara detail...'),
+                Forms\Components\TextInput::make('live_url')
+                    ->label('Live URL')
+                    ->maxLength(255)
+                    ->default(null)
+                    ->url()
+                    ->placeholder('https://your-project.com'),
+                Forms\Components\TextInput::make('repo_url')
+                    ->label('Repository URL')
+                    ->maxLength(255)
+                    ->default(null)
+                    ->url()
+                    ->placeholder('https://github.com/username/repo'),
+                Forms\Components\Toggle::make('is_featured')
+                    ->label('Featured Project')
+                    ->required()
+                    ->default(false),
             ]);
     }
 
@@ -55,23 +87,38 @@ class ProjectResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('project_category_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Category')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('year')
+                    ->label('Year')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('role')
-                    ->searchable(),
-                Tables\Columns\ImageColumn::make('hero_image_url'),
+                    ->searchable()
+                    ->placeholder('No role specified'),
+                Tables\Columns\ImageColumn::make('hero_image_url')
+                    ->label('Hero Image')
+                    ->width(80)
+                    ->height(60),
                 Tables\Columns\TextColumn::make('live_url')
-                    ->searchable(),
+                    ->label('Live Demo')
+                    ->searchable()
+                    ->url(fn ($record) => $record->live_url ?: null)
+                    ->openUrlInNewTab()
+                    ->placeholder('No live demo'),
                 Tables\Columns\TextColumn::make('repo_url')
-                    ->searchable(),
+                    ->label('Repository')
+                    ->searchable()
+                    ->url(fn ($record) => $record->repo_url ?: null)
+                    ->openUrlInNewTab()
+                    ->placeholder('No repository'),
                 Tables\Columns\IconColumn::make('is_featured')
+                    ->label('Featured')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('sort_order')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -85,6 +132,7 @@ class ProjectResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->defaultSort('year', 'desc')
             ->filters([
                 //
             ])

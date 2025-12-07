@@ -10,8 +10,8 @@ class Project extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'project_category_id','title','role','hero_image_url','description_html',
-        'live_url','repo_url','is_featured','sort_order'
+        'project_category_id','title','year','role','hero_image_url','description_html',
+        'live_url','repo_url','is_featured'
     ];
 
     public function category(){

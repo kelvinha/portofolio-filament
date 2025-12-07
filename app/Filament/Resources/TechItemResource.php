@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TechItemResource\Pages;
 use App\Filament\Resources\TechItemResource\RelationManagers;
 use App\Models\TechItem;
+use App\Models\TechGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,27 +18,35 @@ class TechItemResource extends Resource
 {
     protected static ?string $model = TechItem::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-wrench-screwdriver';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('tech_group_id')
+                Forms\Components\Select::make('tech_group_id')
+                    ->label('Tech Group')
+                    ->options(TechGroup::pluck('name', 'id'))
                     ->required()
-                    ->numeric(),
+                    ->searchable()
+                    ->placeholder('Pilih tech group'),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('icon_url')
+                    ->label('Icon URL')
                     ->maxLength(255)
-                    ->default(null),
+                    ->default(null)
+                    ->placeholder('https://example.com/icon.png'),
                 Forms\Components\Toggle::make('is_featured')
-                    ->required(),
+                    ->label('Featured')
+                    ->required()
+                    ->default(false),
                 Forms\Components\TextInput::make('sort_order')
                     ->required()
                     ->numeric()
-                    ->default(0),
+                    ->default(0)
+                    ->helperText('Urutan tampilan (angka kecil akan tampil lebih dulu)'),
             ]);
     }
 
@@ -45,14 +54,18 @@ class TechItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tech_group_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('techGroup.name')
+                    ->label('Tech Group')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('icon_url')
-                    ->searchable(),
+                Tables\Columns\ImageColumn::make('icon_url')
+                    ->label('Icon')
+                    ->width(60)
+                    ->height(60),
                 Tables\Columns\IconColumn::make('is_featured')
+                    ->label('Featured')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('sort_order')
                     ->numeric()

@@ -12,12 +12,13 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Models\Profile;
 
 class SocialLinkResource extends Resource
 {
     protected static ?string $model = SocialLink::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-link';
 
     public static function form(Form $form): Form
     {
@@ -25,19 +26,34 @@ class SocialLinkResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('profile_id')
                     ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('platform')
+                    ->numeric()
+                    ->hidden(),
+                Forms\Components\Select::make('platform')
                     ->required()
-                    ->maxLength(255),
+                    ->options([
+                        'GitHub' => 'GitHub',
+                        'Twitter' => 'Twitter/X',
+                        'LinkedIn' => 'LinkedIn',
+                        'Instagram' => 'Instagram',
+                        'Facebook' => 'Facebook',
+                        'YouTube' => 'YouTube',
+                        'Dribbble' => 'Dribbble',
+                        'Behance' => 'Behance',
+                        'Medium' => 'Medium',
+                        'Dev.to' => 'Dev.to',
+                    ])
+                    ->placeholder('Pilih platform social media')
+                    ->helperText('SVG icon akan di-generate otomatis berdasarkan platform yang dipilih'),
                 Forms\Components\TextInput::make('url')
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('icon_svg')
-                    ->columnSpanFull(),
+                    ->maxLength(255)
+                    ->url()
+                    ->placeholder('https://...'),
                 Forms\Components\TextInput::make('sort_order')
                     ->required()
                     ->numeric()
-                    ->default(0),
+                    ->default(0)
+                    ->helperText('Urutan tampilan (angka kecil akan tampil lebih dulu)'),
             ]);
     }
 
@@ -45,13 +61,16 @@ class SocialLinkResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('profile_id')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('platform')
-                    ->searchable(),
+                    ->searchable()
+                    ->badge(),
                 Tables\Columns\TextColumn::make('url')
-                    ->searchable(),
+                    ->searchable()
+                    ->limit(30),
+                Tables\Columns\ViewColumn::make('icon_preview')
+                    ->label('Icon')
+                    ->view('filament.tables.columns.social-icon-preview')
+                    ->width('60px'),
                 Tables\Columns\TextColumn::make('sort_order')
                     ->numeric()
                     ->sortable(),
@@ -82,6 +101,14 @@ class SocialLinkResource extends Resource
         return [
             //
         ];
+    }
+
+    protected static function mutateFormDataBeforeCreate(array $data): array
+    {
+        $activeProfile = Profile::latest('updated_at')->first();
+        $data['profile_id'] = $activeProfile?->id ?? 1;
+
+        return $data;
     }
 
     public static function getPages(): array
