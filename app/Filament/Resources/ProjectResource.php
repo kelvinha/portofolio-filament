@@ -41,6 +41,14 @@ class ProjectResource extends Resource
                     ->default(date('Y'))
                     ->required()
                     ->placeholder('e.g. 2024'),
+                Forms\Components\Select::make('techItems')
+                    ->label('Tech Stack')
+                    ->multiple()
+                    ->relationship('techItems', 'name')
+                    ->options(\App\Models\TechItem::orderBy('name')->pluck('name', 'id'))
+                    ->searchable()
+                    ->preload()
+                    ->placeholder('Select technologies used in this project'),
                 Forms\Components\TextInput::make('role')
                     ->label('Your Role')
                     ->maxLength(255)
