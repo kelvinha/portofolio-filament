@@ -5,6 +5,7 @@ namespace App\Filament\Resources\ProfileResource\Pages;
 use App\Filament\Resources\ProfileResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Cache;
 
 class EditProfile extends EditRecord
 {
@@ -15,5 +16,10 @@ class EditProfile extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function afterSave(): void
+    {
+        Cache::forget('landing_page_data');
     }
 }

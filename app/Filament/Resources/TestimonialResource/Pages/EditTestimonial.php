@@ -5,6 +5,7 @@ namespace App\Filament\Resources\TestimonialResource\Pages;
 use App\Filament\Resources\TestimonialResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Facades\Cache;
 
 class EditTestimonial extends EditRecord
 {
@@ -15,5 +16,10 @@ class EditTestimonial extends EditRecord
         return [
             Actions\DeleteAction::make(),
         ];
+    }
+
+    protected function afterSave(): void
+    {
+        Cache::forget('landing_page_data');
     }
 }

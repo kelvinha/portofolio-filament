@@ -28,7 +28,7 @@ class LandingController extends Controller
                     'year'        => $p->year,
                     'role'        => $p->role,
                     'category'    => optional($p->category)->slug,
-                    'image'       => env('APP_URL').'/storage/'.$p->hero_image_url,
+                    'image'       => env('APP_URL').'storage/'.$p->hero_image_url,
                     'tech'        => $p->techItems->pluck('name')->values(),
                     'description' => $p->description_html,
                     'liveUrl'     => $p->live_url,
