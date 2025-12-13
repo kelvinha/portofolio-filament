@@ -15,9 +15,11 @@
                 <a href="#contact" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Contact</a>
             </div>
             <div class="hidden md:block">
-                <a href="{{ $profile->cv_url ?? 'dummy-cv.pdf' }}" download class="px-5 py-2.5 text-sm font-semibold rounded-lg bg-matrix-gray-900 text-matrix-gray-100 hover:bg-matrix-gray-100 hover:text-cyber-ink transition-all duration-300 focus-ring-modern">
-                    Download CV
-                </a>
+                @if($profile && $profile->cv_url)
+                    <a href="{{ Storage::url($profile->cv_url) }}" download class="px-5 py-2.5 text-sm font-semibold rounded-lg bg-matrix-gray-900 text-matrix-gray-100 hover:bg-matrix-gray-100 hover:text-cyber-ink transition-all duration-300 focus-ring-modern">
+                        Download CV
+                    </a>
+                @endif
             </div>
             <!-- Mobile Menu Button -->
             <div class="md:hidden">
@@ -45,9 +47,11 @@
                 <a href="#projects" @click="mobileMenuOpen = false" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Projects</a>
                 <!-- <a href="#testimonials" @click="mobileMenuOpen = false" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Testimonials</a> -->
                 <a href="#contact" @click="mobileMenuOpen = false" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Contact</a>
-                <a href="dummy-cv.pdf" download class="mt-4 px-6 py-3 text-sm font-semibold rounded-lg bg-matrix-gray-900 text-matrix-gray-100 hover:bg-matrix-gray-100 hover:text-cyber-ink transition-all duration-300 focus-ring-modern">
-                    Download CV
-                </a>
+                @if($profile && $profile->cv_url)
+                    <a href="{{ Storage::url($profile->cv_url) }}" download class="mt-4 px-6 py-3 text-sm font-semibold rounded-lg bg-matrix-gray-900 text-matrix-gray-100 hover:bg-matrix-gray-100 hover:text-cyber-ink transition-all duration-300 focus-ring-modern">
+                        Download CV
+                    </a>
+                @endif
             </div>
         </div>
     </header>

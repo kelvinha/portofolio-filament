@@ -60,13 +60,15 @@ class ProfileResource extends Resource
                     ->numeric()
                     ->default(0),
                 Forms\Components\FileUpload::make('cv_url')
+                    ->label('CV File')
                     ->acceptedFileTypes(['application/pdf'])
                     ->disk('public')
                     ->directory('profiles/cvs')
                     ->visibility('public')
                     ->maxSize(10240) // 10MB
                     ->enableDownload()
-                    ->enableOpen(),
+                    ->enableOpen()
+                    ->helperText('Upload your CV file (PDF format, max 10MB)'),
             ]);
     }
 
