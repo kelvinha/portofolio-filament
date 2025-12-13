@@ -8,8 +8,8 @@
             <div class="hidden md:flex items-center space-x-8">
                 <a href="#home" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Home</a>
                 <a href="#about" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">About</a>
-                <a href="#skills" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Skills</a>
                 <a href="#experience" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Experience</a>
+                <a href="#skills" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Skills</a>
                 <a href="#projects" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Projects</a>
                 <!-- <a href="#testimonials" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Testimonials</a> -->
                 <a href="#contact" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Contact</a>
@@ -42,8 +42,8 @@
             <div class="flex flex-col items-center space-y-6 py-8">
                 <a href="#home" @click="mobileMenuOpen = false" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Home</a>
                 <a href="#about" @click="mobileMenuOpen = false" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">About</a>
-                <a href="#skills" @click="mobileMenuOpen = false" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Skills</a>
                 <a href="#experience" @click="mobileMenuOpen = false" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Experience</a>
+                <a href="#skills" @click="mobileMenuOpen = false" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Skills</a>
                 <a href="#projects" @click="mobileMenuOpen = false" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Projects</a>
                 <!-- <a href="#testimonials" @click="mobileMenuOpen = false" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Testimonials</a> -->
                 <a href="#contact" @click="mobileMenuOpen = false" class="text-matrix-gray-100 hover:text-plasma-cyan transition-colors">Contact</a>
