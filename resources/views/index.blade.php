@@ -83,7 +83,7 @@
         <section id="about" class="py-16 md:py-24">
             <div class="text-center mb-12 md:mb-16">
                 <h2 class="text-3xl md:text-4xl font-bold tracking-tight">About Me</h2>
-                <p class="text-lg text-matrix-gray-500 mt-2">A bit about my journey in the world of technology .</p>
+                <p class="text-lg text-matrix-gray-500 mt-2">A bit about my journey in the world of technology.</p>
             </div>
             <div class="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12 items-center">
                 <div class="lg:col-span-3 text-base md:text-lg text-matrix-gray-300 leading-7 md:leading-8 space-y-4">
